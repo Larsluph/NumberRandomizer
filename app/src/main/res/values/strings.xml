@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Number Randomizer</string>
+    <string name="packagename">com.larsluph.numberrandomizer</string>
+    <string name="lowbound_key">lowerBound</string>
+    <string name="highbound_key">upperBound</string>
+    <string name="text_bounds">Bounds: [%d; %d]</string>
+    <string name="menu_bounds">Set Boundaries</string>
+    <string name="popup_lowbound">Enter lower boundary</string>
+    <string name="popup_highbound">Enter upper boundary</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+</resources>

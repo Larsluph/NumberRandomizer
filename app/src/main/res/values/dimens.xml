@@ -1,0 +1,7 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="num_margin">100dp</dimen>
+    <dimen name="num_width">350dp</dimen>
+    <dimen name="num_textSize">75sp</dimen>
+    <dimen name="bounds_textSize">36sp</dimen>
+</resources>
