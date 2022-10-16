@@ -1,18 +1,12 @@
 package com.larsluph.numberrandomizer
 
-import android.content.Context
-
-class RollingThread(private val context: Context, private val timeout: Int) : Runnable {
+class RollingThread(private val timeout: Int, private val rollMethod: () -> Unit) : Runnable {
     override fun run() {
         val timestamp = System.currentTimeMillis()
 
         do {
-            rollOnce()
+            rollMethod()
             Thread.sleep(40)
         } while (System.currentTimeMillis() - timestamp < timeout)
-    }
-
-    private fun rollOnce() {
-        (context as MainActivity).rollOnce()
     }
 }

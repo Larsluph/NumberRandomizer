@@ -75,12 +75,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun rollOnce() {
+    private fun rollOnce() {
         runOnUiThread { updateButtonFromNum(randint(lowerBound, upperBound)) }
     }
 
     private fun startRolling() {
-        Thread(RollingThread(this, 800)).start()
+        Thread(RollingThread(800) { rollOnce() }).start()
     }
 
     private fun updateTextBoundaries() {
