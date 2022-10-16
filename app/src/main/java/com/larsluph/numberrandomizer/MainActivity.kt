@@ -1,5 +1,10 @@
 package com.larsluph.numberrandomizer
 
+import android.content.Context
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
@@ -12,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.lang.Math.random
+import kotlin.math.sqrt
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -38,6 +45,29 @@ class MainActivity : AppCompatActivity() {
             updateTextBoundaries()
         }
 
+    private var sensorManager: SensorManager? = null
+
+    private val mSensorListener: SensorEventListener = object : SensorEventListener {
+        private var acceleration: Float = 10F
+        private var accelerationCurrent: Float = SensorManager.GRAVITY_EARTH
+        private var accelerationLast: Float = SensorManager.GRAVITY_EARTH
+
+        override fun onSensorChanged(event: SensorEvent) {
+            val x = event.values[0]
+            val y = event.values[1]
+            val z = event.values[2]
+            accelerationLast = accelerationCurrent
+            accelerationCurrent = sqrt((x * x + y * y + z * z).toDouble()).toFloat()
+            val delta: Float = accelerationCurrent - accelerationLast
+            acceleration = acceleration * 0.9f + delta
+            if (acceleration > 12) {
+                startRolling()
+            }
+        }
+
+        override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -48,16 +78,21 @@ class MainActivity : AppCompatActivity() {
         updateButtonFromNum(randint(lowerBound, upperBound))
         button.setOnClickListener { startRolling() }
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { startRolling() }
+
+        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        sensorManager!!.registerListener(mSensorListener, sensorManager!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL)
     }
 
     override fun onResume() {
         super.onResume()
         loadData()
+        sensorManager!!.registerListener(mSensorListener, sensorManager!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL)
     }
 
     override fun onPause() {
         super.onPause()
         saveData()
+        sensorManager!!.unregisterListener(mSensorListener)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
