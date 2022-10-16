@@ -18,13 +18,23 @@ class MainActivity : AppCompatActivity() {
     private var lowerBound = 1
         set(value) {
             Log.d("lowerBound", "$field -> $value")
-            field = value
+            if (value > upperBound) {
+                Log.d("lowerBound", getString(R.string.switch_boundaries))
+                field = upperBound
+                upperBound = value
+            } else
+                field = value
             updateTextBoundaries()
         }
     private var upperBound = 10
         set(value) {
             Log.d("upperBound", "$field -> $value")
-            field = value
+            if (value < lowerBound) {
+                Log.d("upperBound", getString(R.string.switch_boundaries))
+                field = lowerBound
+                lowerBound = value
+            } else
+                field = value
             updateTextBoundaries()
         }
 
@@ -131,18 +141,18 @@ class MainActivity : AppCompatActivity() {
         AlertDialog.Builder(this)
                 .setTitle(getString(R.string.popup_lowbound))
                 .setView(inputLow)
-                .setPositiveButton(getString(R.string.ok)) { _, _ ->
+                .setPositiveButton(getString(android.R.string.ok)) { _, _ ->
                     try { lowerBound = inputLow.text.toString().toInt() } catch (e: NumberFormatException) {}
                     AlertDialog.Builder(this)
                             .setTitle(getString(R.string.popup_highbound))
                             .setView(inputHigh)
-                            .setPositiveButton(getString(R.string.ok)) { _, _ ->
+                            .setPositiveButton(getString(android.R.string.ok)) { _, _ ->
                                 try { upperBound = inputHigh.text.toString().toInt() } catch (e: NumberFormatException) {}
                             }
-                            .setNegativeButton(getString(R.string.cancel)) {dialog, _ -> dialog.cancel()}
+                            .setNegativeButton(getString(android.R.string.cancel)) {dialog, _ -> dialog.cancel()}
                             .show()
                 }
-                .setNegativeButton(getString(R.string.cancel)) {dialog, _ -> dialog.cancel()}
+                .setNegativeButton(getString(android.R.string.cancel)) {dialog, _ -> dialog.cancel()}
                 .show()
     }
 }

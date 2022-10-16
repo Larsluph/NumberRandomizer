@@ -7,6 +7,6 @@
     <string name="menu_bounds">Set Boundaries</string>
     <string name="popup_lowbound">Enter lower boundary</string>
     <string name="popup_highbound">Enter upper boundary</string>
-    <string name="ok">OK</string>
-    <string name="cancel">Cancel</string>
+    <string name="switch_boundaries">Switching boundaries to match assertion</string>
+    <string name="fab_desc">Reroll</string>
 </resources>
